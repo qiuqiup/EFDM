@@ -10,7 +10,8 @@ runs/
 wandb/
 
 # ---- 数据集（体积大且常有许可限制，README 里给下载脚本即可）----
-data/
+# 注意用 data/* 而非 data/ ——父目录被整体排除时，下面的 !data/README.md 会失效
+data/*
 !data/README.md
 *.npz
 *.npy
