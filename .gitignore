@@ -1,0 +1,65 @@
+# ---- 模型权重 / 训练产物（绝对不要进公开仓库）----
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+save_models/
+save_models_toy/
+checkpoints/
+runs/
+wandb/
+
+# ---- 数据集（体积大且常有许可限制，README 里给下载脚本即可）----
+data/
+!data/README.md
+*.npz
+*.npy
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+
+# ---- 集群 / 作业日志（含绝对路径与用户名）----
+logs/
+slurm-*.out
+slurm-*.err
+*.log
+
+# ---- 评估产物（图、指标、采样结果）----
+eval_outputs/
+samples/
+results/
+figs/
+*.pdf
+*.png
+*.jpg
+!docs/**/*.png
+
+# ---- Notebook 输出（可能残留路径、traceback、数据）----
+.ipynb_checkpoints/
+
+# ---- 密钥 / 凭据（保险起见，永远不要提交）----
+.env
+.env.*
+*.key
+*.pem
+secrets.*
+credentials.*
+.netrc
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.idea/
+.DS_Store
+__MACOSX/
