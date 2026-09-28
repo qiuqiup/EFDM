@@ -1,4 +1,4 @@
-# ---- 模型权重 / 训练产物（绝对不要进公开仓库）----
+# ---- 训练产物（下面单独放行论文使用的 QM9 权重）----
 *.pth
 *.pt
 *.ckpt
@@ -7,6 +7,8 @@ save_models/
 save_models_toy/
 checkpoints/
 runs/
+outputs/
+bent_generated/
 wandb/
 
 # ---- 数据集（体积大且常有许可限制，README 里给下载脚本即可）----
@@ -19,6 +21,12 @@ data/*
 *.hdf5
 *.pkl
 *.pickle
+
+# ---- 随仓库发布的固定 Bent 数据与 QM9 EMA 权重 ----
+!data/bent/
+!data/bent/two_gaussian_train_val_data.pt
+!data/bent/two_gaussian_test_data.pt
+!model/qm9_efdm_epoch8000_ema.pth
 
 # ---- 集群 / 作业日志（含绝对路径与用户名）----
 logs/
