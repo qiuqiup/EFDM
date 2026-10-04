@@ -97,6 +97,15 @@ class ExistenceMethod(BaseMethod):
 
 
         dataset_type = getattr(cfg, 'dataset_type', 'trip')
+        existence_keep_mode = getattr(cfg, "existence_keep_mode", "bernoulli")
+        if existence_keep_mode not in ("bernoulli", "threshold"):
+            raise ValueError(
+                "existence_keep_mode must be 'bernoulli' or 'threshold'."
+            )
+        if dataset_type == "molecule" and existence_keep_mode == "threshold":
+            raise ValueError(
+                "existence_keep_mode='threshold' is only supported for non-molecule datasets."
+            )
 
         if dataset_type == 'molecule':
 
@@ -116,6 +125,7 @@ class ExistenceMethod(BaseMethod):
         self.pad_mode = cfg.pad_mode
         self.existence_eps = cfg.existence_eps
         self.dataset_type = dataset_type
+        self.existence_keep_mode = existence_keep_mode
 
         self.shuffle_points_each_epoch = bool(getattr(cfg, "shuffle_points_each_epoch", True))
         self.existence_prepad_to_kmax = bool(getattr(cfg, "existence_prepad_to_kmax", False))
@@ -1267,6 +1277,9 @@ class ExistenceMethod(BaseMethod):
             "noise_schedule": str(
                 getattr(self.cfg, "noise_schedule", "linear")
             ),
+            "existence_keep_mode": (
+                "argmax" if self.dataset_type == "molecule" else self.existence_keep_mode
+            ),
         }
         if corrector_overrides:
             self.last_sampling_stats["corrector_overrides"] = corrector_overrides
@@ -1322,7 +1335,10 @@ class ExistenceMethod(BaseMethod):
                 generator=predictor_generator,
             )
         )
-        keep = (decoder_uniform < m_prob).squeeze(-1)
+        if self.existence_keep_mode == "threshold":
+            keep = (m_prob > 0.5).squeeze(-1)
+        else:
+            keep = (decoder_uniform < m_prob).squeeze(-1)
 
         xt_final = xt.clone()
         xt_final[~keep] = float("-inf")
